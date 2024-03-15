@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 public class Application {
     private static Logger logger = LoggerFactory.getLogger((Application.class));
 
@@ -37,9 +38,25 @@ public class Application {
         }
         archive.forEach(libraryArchive -> System.out.println(libraryArchive));
 
-
+        // ADD ELEMENT
+//
         LibraryArchive.addElement(archive);
 
+        // REMOVE ELEMENT
+
+        LibraryArchive.removeElement(archive);
+
+        // SEARCH ELEMENT
+
+        LibraryArchive.searchByCode(archive);
+
+        // SEARCH BY YEAR OF PUBLICATION
+
+        LibraryArchive.searchByYear(archive);
+
+        // SEARCH BY AUTHOR
+
+        
     }
 
 

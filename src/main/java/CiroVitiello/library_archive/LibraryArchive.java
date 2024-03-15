@@ -3,8 +3,10 @@ package CiroVitiello.library_archive;
 import CiroVitiello.enums.Periodicity;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public abstract class LibraryArchive {
 
@@ -29,7 +31,7 @@ public abstract class LibraryArchive {
 
     // METHODS
 
-    public static void addElement(List<LibraryArchive> elements) {
+    public static void addElement(List<LibraryArchive> element) {
         Scanner scanner = new Scanner(System.in);
         int value;
         do {
@@ -51,7 +53,7 @@ public abstract class LibraryArchive {
                     String author = scanner.nextLine();
                     System.out.println(".. and the genre, of course!");
                     String genre = scanner.nextLine();
-                    elements.add(0, new Book(code, title, year, pages, author, genre));
+                    element.add(0, new Book(code, title, year, pages, author, genre));
                     System.out.println("Book created!");
                     break;
                 }
@@ -71,7 +73,7 @@ public abstract class LibraryArchive {
                     int periodicitySelector = Integer.parseInt(scanner.nextLine());
                     Periodicity[] periodicities = Periodicity.values();
                     Periodicity periodicity = periodicities[periodicitySelector - 1];
-                    elements.add(0, new Magazine(code, title, year, pages, periodicity));
+                    element.add(0, new Magazine(code, title, year, pages, periodicity));
                     System.out.println("Magazine created!");
                     break;
                 }
@@ -87,6 +89,100 @@ public abstract class LibraryArchive {
 
         } while (value != 0);
 
+    }
+
+    public static void removeElement(List<LibraryArchive> element) {
+        Scanner scanner = new Scanner(System.in);
+        int value;
+        do {
+            System.out.println("type 0 to close the application.");
+            System.out.println("type 1 to remove an element by ISBN code.");
+            value = Integer.parseInt(scanner.nextLine());
+            switch (value) {
+                case 1: {
+                    System.out.println("insert the ISBN code of the element you want to remove");
+                    int code = Integer.parseInt(scanner.nextLine());
+                    try {
+                        LibraryArchive elementToRemove = element.stream().filter(libraryArchive -> libraryArchive.getISBNcode() == code).toList().get(0);
+                        element.remove(elementToRemove);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.getMessage();
+                    }
+                }
+                case 0: {
+                    System.out.println("closing application..");
+                    scanner.close();
+                    break;
+                }
+                default: {
+                    System.err.println("Try again! Insert a correct value! ");
+                }
+            }
+        } while (value != 0);
+
+    }
+
+    public static void searchByCode(List<LibraryArchive> element) {
+        Scanner scanner = new Scanner(System.in);
+        int value;
+        do {
+            System.out.println("type 0 to close the application.");
+            System.out.println("type 1 to search an element by ISBN code.");
+            value = Integer.parseInt(scanner.nextLine());
+            switch (value) {
+                case 1:
+                    System.out.println("insert the ISBN code of the element you want to search");
+                    int code = Integer.parseInt(scanner.nextLine());
+                    try {
+                        LibraryArchive elementToSearch = element.stream().filter(libraryArchive -> libraryArchive.getISBNcode() == code).toList().get(0);
+                        System.out.println("you searched for: " + elementToSearch);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.getMessage();
+                    }
+                case 0: {
+                    System.out.println("closing application..");
+                    scanner.close();
+                    break;
+                }
+                default: {
+                    System.err.println("Try again! Insert a correct value! ");
+                }
+            }
+
+        } while (value != 0);
+    }
+
+    public static void searchByYear(List<LibraryArchive> element) {
+        Scanner scanner = new Scanner(System.in);
+        int value;
+        do {
+            System.out.println("type 0 to close the application.");
+            System.out.println("type 1 to search an element by publication year.");
+            value = Integer.parseInt(scanner.nextLine());
+            switch (value) {
+                case 1: {
+                    System.out.println("insert the year of the element you want to search");
+                    int year = Integer.parseInt(scanner.nextLine());
+                    try {
+                        Map<Integer, List<LibraryArchive>> listByYear = element.stream().filter(libraryArchive -> libraryArchive.getYearOfPublication() == year).collect(Collectors.groupingBy(libraryArchive -> libraryArchive.getYearOfPublication()));
+                        listByYear.forEach((integer, archives) -> System.out.println(archives));
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.getMessage();
+
+                    }
+                    break;
+                }
+                case 0: {
+                    System.out.println("closing application..");
+                    scanner.close();
+                    break;
+                }
+                default: {
+                    System.err.println("Try again! Insert a correct value! ");
+                }
+            }
+
+        } while (value != 0);
     }
 
     @Override

@@ -37,5 +37,10 @@ public class Application {
         }
         archive.forEach(libraryArchive -> System.out.println(libraryArchive));
 
+
+        LibraryArchive.addElement(archive);
+
     }
+
+
 }

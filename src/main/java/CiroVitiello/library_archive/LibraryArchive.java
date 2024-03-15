@@ -185,6 +185,43 @@ public abstract class LibraryArchive {
         } while (value != 0);
     }
 
+    public static void searchByAuthor(List<LibraryArchive> element) {
+        Scanner scanner = new Scanner(System.in);
+        int value;
+        do {
+            System.out.println("type 0 to close the application.");
+            System.out.println("type 1 to search an element author.");
+            value = Integer.parseInt(scanner.nextLine());
+            switch (value) {
+                case 1: {
+                    System.out.println("insert the author of the element you want to search");
+                    String author = scanner.nextLine();
+                    try {
+                        Map<String, List<LibraryArchive>> listByAuthor = element.stream()
+                                .filter(libraryArchive -> libraryArchive instanceof Book)
+                                .filter(libraryArchive -> ((Book) libraryArchive).getAuthor().toLowerCase().equals(author))
+                                .collect(Collectors.groupingBy(libraryArchive -> ((Book) libraryArchive).getAuthor().toLowerCase()));
+                        listByAuthor.forEach((s, archives) -> System.out.println(s + archives));
+                        
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.getMessage();
+
+                    }
+                    break;
+                }
+                case 0: {
+                    System.out.println("closing application..");
+                    scanner.close();
+                    break;
+                }
+                default: {
+                    System.err.println("Try again! Insert a correct value! ");
+                }
+            }
+
+        } while (value != 0);
+    }
+
     @Override
     public String toString() {
         return "LibraryArchive{" +

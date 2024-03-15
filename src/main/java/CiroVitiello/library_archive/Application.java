@@ -40,23 +40,23 @@ public class Application {
 
         // ADD ELEMENT
 //
-        LibraryArchive.addElement(archive);
-
-        // REMOVE ELEMENT
-
-        LibraryArchive.removeElement(archive);
-
-        // SEARCH ELEMENT
-
-        LibraryArchive.searchByCode(archive);
-
-        // SEARCH BY YEAR OF PUBLICATION
-
-        LibraryArchive.searchByYear(archive);
+//        LibraryArchive.addElement(archive);
+//
+//        // REMOVE ELEMENT
+//
+//        LibraryArchive.removeElement(archive);
+//
+//        // SEARCH ELEMENT
+//
+//        LibraryArchive.searchByCode(archive);
+//
+//        // SEARCH BY YEAR OF PUBLICATION
+//
+//        LibraryArchive.searchByYear(archive);
 
         // SEARCH BY AUTHOR
 
-        
+        LibraryArchive.searchByAuthor(archive);
     }
 
 

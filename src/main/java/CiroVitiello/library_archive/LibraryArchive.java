@@ -1,11 +1,11 @@
 package CiroVitiello.library_archive;
 
 import CiroVitiello.enums.Periodicity;
+import org.apache.commons.io.FileUtils;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class LibraryArchive {
@@ -202,7 +202,7 @@ public abstract class LibraryArchive {
                                 .filter(libraryArchive -> ((Book) libraryArchive).getAuthor().toLowerCase().equals(author))
                                 .collect(Collectors.groupingBy(libraryArchive -> ((Book) libraryArchive).getAuthor().toLowerCase()));
                         listByAuthor.forEach((s, archives) -> System.out.println(s + archives));
-                        
+
                     } catch (ArrayIndexOutOfBoundsException e) {
                         e.getMessage();
 
@@ -221,6 +221,51 @@ public abstract class LibraryArchive {
 
         } while (value != 0);
     }
+
+    public static void saveData(List<LibraryArchive> elements) {
+        try {
+            File file = new File("libraryArchive.txt");
+            String data = "";
+            for (LibraryArchive readable : elements) {
+                if (readable instanceof Book) {
+                    data += readable.getISBNcode() + "@" + readable.getTitle() + "@" + readable.getYearOfPublication() + "@" + readable.getPages() + "@" + ((Book) readable).getAuthor() + "@" + ((Book) readable).getGenre() + "#";
+                } else if (readable instanceof Magazine) {
+                    data += readable.getISBNcode() + "@" + readable.getTitle() + "@" + readable.getYearOfPublication() + "@" + readable.getPages() + "@" + ((Magazine) readable).getPeriodicity() + "#";
+                }
+                FileUtils.writeStringToFile(file, data, "UTF-8");
+            }
+        } catch (IOException ex) {
+            System.err.println("failed to write");
+        } catch (Exception ex) {
+            System.err.println("generic error during writing");
+        }
+    }
+
+    public static List<LibraryArchive> loadData() {
+        List<LibraryArchive> loadedList = new ArrayList<>();
+        try {
+            File file = new File("libraryArchive.txt");
+            String fileString = FileUtils.readFileToString(file, "UTF-8");
+            List<String> splitted = Arrays.asList(fileString.split("#"));
+            loadedList = splitted.stream().map(string -> {
+                String[] obj = string.split("@");
+                if (Arrays.asList(obj).size() == 6) {
+                    return new Book(Integer.parseInt(obj[0]), obj[1], Integer.parseInt(obj[2]), Integer.parseInt(obj[3]), obj[4], obj[5]);
+                } else {
+                    return new Magazine(Integer.parseInt(obj[0]), obj[1], Integer.parseInt(obj[2]), Integer.parseInt(obj[3]), Periodicity.valueOf(obj[4]));
+                }
+            }).toList();
+            
+
+        } catch (IOException ex) {
+            System.err.println("failed to load");
+        } catch (Exception ex) {
+            System.err.println("generic error during loading");
+        }
+        return loadedList;
+
+    }
+
 
     @Override
     public String toString() {

@@ -37,7 +37,7 @@ public class Magazine extends LibraryArchive {
         };
 
     }
-    
+
 
     // METHODS
 
@@ -62,5 +62,7 @@ public class Magazine extends LibraryArchive {
         return periodicity == magazines.periodicity;
     }
 
-
+    public Periodicity getPeriodicity() {
+        return periodicity;
+    }
 }

@@ -1,6 +1,10 @@
 package CiroVitiello.library_archive;
 
 import CiroVitiello.enums.Periodicity;
+import com.github.javafaker.Faker;
+
+import java.util.Random;
+import java.util.function.Supplier;
 
 public class Magazine extends LibraryArchive {
 
@@ -15,6 +19,25 @@ public class Magazine extends LibraryArchive {
         this.periodicity = periodicity;
     }
 
+
+    // SUPPLIER
+
+    public static Supplier<Magazine> magazineSupplier() {
+
+        return () -> {
+            Faker faker = new Faker();
+            Random random = new Random();
+            int code = random.nextInt(1, 500);
+            String title = faker.book().title();
+            int releaseDate = random.nextInt(1960, 2024);
+            int pages = random.nextInt(50, 300);
+            Periodicity periodicity = Periodicity.randomPeriodicity();
+
+            return new Magazine(code, title, releaseDate, pages, periodicity);
+        };
+
+    }
+    
 
     // METHODS
 

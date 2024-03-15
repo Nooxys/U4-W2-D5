@@ -1,33 +1,41 @@
 package CiroVitiello.library_archive;
 
-import com.github.javafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
 
 public class Application {
     private static Logger logger = LoggerFactory.getLogger((Application.class));
 
     public static void main(String[] args) {
 
-        Faker faker = new Faker();
+        Random random = new Random();
+//        Supplier<Book> bookSupplier = Book.booksSupplier();
+//        List<Book> bookList = new ArrayList<>();
+//        for (int i = 0; i < 30; i++) {
+//            bookList.add(bookSupplier.get());
+//        }
+//        bookList.forEach(book -> logger.info(String.valueOf(book)));
+//
+//
+//        Supplier<Magazine> magazineSupplier = Magazine.magazineSupplier();
+//        List<Magazine> magazineList = new ArrayList<>();
+//        for (int i = 0; i < 30; i++) {
+//            magazineList.add(magazineSupplier.get());
+//        }
+//        magazineList.forEach(magazine -> logger.info(String.valueOf(magazine)));
 
-        // SUPPLIERS
+        List<LibraryArchive> archive = new ArrayList<>();
 
-        Supplier<Book> booksSupplier = () -> {
-            Random random = new Random();
-            int code = random.nextInt(1, 500);
-            String title = faker.book().title();
-            int releaseDate = random.nextInt(1960, 2024);
-            int pages = random.nextInt(50, 300);
-            String author = faker.book().author();
-            String genre = faker.book().genre();
+        for (int i = 0; i < 20; i++) {
+            if (random.nextInt(0, 2) < 1) {
+                archive.add(Book.booksSupplier().get());
+            } else archive.add(Magazine.magazineSupplier().get());
+        }
+        archive.forEach(libraryArchive -> System.out.println(libraryArchive));
 
-            return new Book(code, title, releaseDate, pages, author, genre);
-        };
-
-        // problmes with github, trying to resolve with fake commit
     }
 }
